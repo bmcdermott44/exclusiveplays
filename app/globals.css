@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #10121a;
+  --ink-2: #171a26;
+  --paper: #f4f1ec;
+  --gold: #f0b429;
+  --plum: #6d4aff;
+  --muted: #9aa1b4;
+}
+
+html,
+body {
+  background: var(--ink);
+  color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+/* Numbers line up in columns wherever a record is shown. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
