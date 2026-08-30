@@ -19,8 +19,32 @@ const RECORD = {
   profile: "https://getnexfuse.com",
 };
 
-// Set this once the Whop product exists. Until then every button points at the same place.
-const CHECKOUT = "#pricing";
+/**
+ * WIRING THE CHECKOUT — two lines, both here.
+ *
+ * 1. WHOP_CHECKOUT: paste the Whop product URL, e.g. "https://whop.com/exclusive-plays/".
+ * 2. PRICE: the monthly figure shown above the button.
+ *
+ * Until WHOP_CHECKOUT is set, every button scrolls to the pricing section instead of leading to
+ * a dead link, so the page can go live and collect interest before payments exist. Once it is a
+ * real URL the buttons open it in a new tab on their own -- nothing else needs touching.
+ *
+ * Whop rather than Stripe or PayPal on purpose: both of those onboard a handicapping business
+ * happily and then close the account or hold the funds once they classify it, which happens after
+ * money is already moving. Whop's underwriting expects this business.
+ *
+ * Whichever is used, the account belongs to Bret and his entity, never James or Fusetek --
+ * chargebacks, the 1099-K and merchant-of-record liability follow whoever signed up.
+ */
+const WHOP_CHECKOUT = "";                     // <- paste the Whop product URL here
+const PRICE = "$TBD";                         // <- and the monthly price here
+
+const CHECKOUT = WHOP_CHECKOUT || "#pricing";
+const CHECKOUT_IS_LIVE = Boolean(WHOP_CHECKOUT);
+// An external checkout opens in a new tab so the reader does not lose the page they were sold on.
+const checkoutLinkProps = CHECKOUT_IS_LIVE
+  ? { target: "_blank" as const, rel: "noopener noreferrer" }
+  : {};
 
 export default function Home() {
   return (
@@ -30,6 +54,7 @@ export default function Home() {
         <span className="display text-2xl tracking-tight">Exclusive Plays</span>
         <a
           href={CHECKOUT}
+          {...checkoutLinkProps}
           className="rounded-full px-5 py-2 text-sm font-bold text-[#10121a] transition hover:brightness-110"
           style={{ background: "var(--gold)" }}
         >
@@ -66,6 +91,7 @@ export default function Home() {
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <a
             href={CHECKOUT}
+          {...checkoutLinkProps}
             className="rounded-full px-8 py-4 text-base font-bold text-[#10121a] transition hover:brightness-110"
             style={{ background: "var(--gold)" }}
           >
@@ -171,7 +197,7 @@ export default function Home() {
         <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-16">
           <div>
             <div className="display tnum text-6xl" style={{ color: "var(--gold)" }}>
-              $TBD
+              {PRICE}
             </div>
             <div className="mt-2 text-sm uppercase tracking-widest" style={{ color: "var(--muted)" }}>
               per month
@@ -179,6 +205,7 @@ export default function Home() {
           </div>
           <a
             href={CHECKOUT}
+          {...checkoutLinkProps}
             className="inline-block rounded-full px-8 py-4 text-center text-base font-bold text-[#10121a] transition hover:brightness-110"
             style={{ background: "var(--gold)" }}
           >
