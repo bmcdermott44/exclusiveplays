@@ -44,18 +44,19 @@ export default async function Home() {
     <main>
       {/* ── Top bar ─────────────────────────────────────────────── */}
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-7">
-        {/* Badge beside the wordmark rather than replacing it: the mark carries recognition,
-            the words carry the name to anyone seeing it for the first time. */}
+        {/* Badge and wordmark together. The badge's own inner text does not read at header size,
+            which is why the wordmark stays beside it -- the mark carries recognition, the words
+            carry the name. */}
         <span className="flex items-center gap-3">
           <Image
             src="/logo.png"
             alt=""
-            width={56}
-            height={56}
+            width={512}
+            height={512}
             priority
-            className="h-14 w-14"
+            className="h-16 w-16 sm:h-[72px] sm:w-[72px]"
           />
-          <span className="display text-2xl tracking-tight">Exclusive Plays</span>
+          <span className="display text-2xl tracking-tight sm:text-3xl">Exclusive Plays</span>
         </span>
         <a
           href={CHECKOUT}
@@ -69,17 +70,6 @@ export default async function Home() {
 
       {/* ── Hero ────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-5xl px-6 pb-20 pt-10 sm:pt-16">
-        {/* The badge at a size it was drawn for. In the header it is a recognition mark at 56px,
-            where its inner wordmark cannot be read; here it is the mark itself. */}
-        <Image
-          src="/logo.png"
-          alt="Exclusive Plays"
-          width={512}
-          height={512}
-          priority
-          className="mb-7 h-28 w-28 sm:h-36 sm:w-36"
-        />
-
         <p
           className="text-sm font-bold uppercase tracking-[0.2em]"
           style={{ color: "var(--gold)" }}
@@ -251,7 +241,7 @@ export default async function Home() {
             style={{ borderColor: "rgba(240,240,240,0.09)", color: "var(--muted)" }}
           >
             <span className="flex items-center gap-2.5">
-              <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7 opacity-90" />
+              <Image src="/logo.png" alt="" width={512} height={512} className="h-12 w-12" />
               <span className="display text-lg text-[var(--paper)]">Exclusive Plays</span>
             </span>
             <span>Record verified on Nexfuse, updated live. {RECORD.since} to present.</span>
