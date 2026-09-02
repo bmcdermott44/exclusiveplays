@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 // Exclusive Plays. One page, one job: make a stranger believe the record, then send them to checkout.
 //
@@ -245,6 +246,19 @@ export default async function Home() {
               <span className="display text-lg text-[var(--paper)]">Exclusive Plays</span>
             </span>
             <span>Record verified on Nexfuse, updated live. {RECORD.since} to present.</span>
+          </div>
+
+          {/* Linked from the home page on purpose. A payment button with no reachable terms,
+              privacy or refund policy is what a browser scores as a throwaway site, and it is
+              what a processor declines. They only count if a crawler and a buyer can find them. */}
+          <div
+            className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm"
+            style={{ color: "var(--muted)" }}
+          >
+            <Link href="/legal/terms">Terms</Link>
+            <Link href="/legal/privacy">Privacy</Link>
+            <Link href="/legal/refunds">Refunds</Link>
+            <Link href="/legal/contact">Contact</Link>
           </div>
         </div>
       </footer>
