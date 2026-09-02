@@ -50,10 +50,10 @@ export default async function Home() {
           <Image
             src="/logo.png"
             alt=""
-            width={44}
-            height={44}
+            width={56}
+            height={56}
             priority
-            className="h-11 w-11"
+            className="h-14 w-14"
           />
           <span className="display text-2xl tracking-tight">Exclusive Plays</span>
         </span>
@@ -69,6 +69,17 @@ export default async function Home() {
 
       {/* ── Hero ────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-5xl px-6 pb-20 pt-10 sm:pt-16">
+        {/* The badge at a size it was drawn for. In the header it is a recognition mark at 56px,
+            where its inner wordmark cannot be read; here it is the mark itself. */}
+        <Image
+          src="/logo.png"
+          alt="Exclusive Plays"
+          width={512}
+          height={512}
+          priority
+          className="mb-7 h-28 w-28 sm:h-36 sm:w-36"
+        />
+
         <p
           className="text-sm font-bold uppercase tracking-[0.2em]"
           style={{ color: "var(--gold)" }}
@@ -81,14 +92,14 @@ export default async function Home() {
           <br />
           and I&apos;m up{" "}
           <span style={{ color: "var(--gold)" }} className="tnum">
-            28 units
+            {RECORD.units.replace("+", "")} units
           </span>
           .
         </h1>
 
         <p className="mt-7 max-w-2xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
           Win rate is the stat everyone advertises and it is the one that tells you the least.
-          I hit 36% of my plays. I take prices nobody else wants, and over{" "}
+          I hit {RECORD.winRate} of my plays. I take prices nobody else wants, and over{" "}
           <span className="text-[var(--paper)]">{RECORD.picks} graded bets</span> that has returned{" "}
           <span className="text-[var(--paper)]">{RECORD.roi}</span>.
         </p>
@@ -137,7 +148,7 @@ export default async function Home() {
           </div>
 
           <p className="mt-12 max-w-2xl text-lg leading-relaxed">
-            A 36% win rate looks bad until you see the prices. Betting favourites at heavy juice
+            A {RECORD.winRate} win rate looks bad until you see the prices. Betting favourites at heavy juice
             can win 60% and lose money all year. I would rather be wrong more often and get paid
             properly when I am right.
           </p>
