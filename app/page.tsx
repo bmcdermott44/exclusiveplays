@@ -10,6 +10,7 @@ import Image from "next/image";
 // entire pitch and they must never be rounded in his favour or quietly left stale.
 
 import { getRecord, RECORD_STATIC_EXPORT as RECORD_STATIC } from "../lib/record";
+import { getSite, getPackages, getPosts, prettyDate } from "../lib/content";
 
 /**
  * WIRING THE CHECKOUT — two lines, both here.
@@ -28,18 +29,22 @@ import { getRecord, RECORD_STATIC_EXPORT as RECORD_STATIC } from "../lib/record"
  * Whichever is used, the account belongs to Bret and his entity, never James or Fusetek --
  * chargebacks, the 1099-K and merchant-of-record liability follow whoever signed up.
  */
-const WHOP_CHECKOUT = "";                     // <- paste the Whop product URL here
-const PRICE = "$TBD";                         // <- and the monthly price here
+// Both now live in content/site.json so Bret can change them himself. The behaviour is unchanged:
+// an empty checkout still scrolls to the pricing section rather than leading to a dead link.
 
-const CHECKOUT = WHOP_CHECKOUT || "#pricing";
-const CHECKOUT_IS_LIVE = Boolean(WHOP_CHECKOUT);
-// An external checkout opens in a new tab so the reader does not lose the page they were sold on.
-const checkoutLinkProps = CHECKOUT_IS_LIVE
-  ? { target: "_blank" as const, rel: "noopener noreferrer" }
-  : {};
 
 export default async function Home() {
   const RECORD = { ...(await getRecord()), ...RECORD_STATIC };
+  const SITE = getSite();
+  const PACKAGES = getPackages();
+  const POSTS = getPosts().slice(0, 3);
+
+  const CHECKOUT = SITE.whopCheckout || "#pricing";
+  const CHECKOUT_IS_LIVE = Boolean(SITE.whopCheckout);
+  // An external checkout opens in a new tab so the reader does not lose the page they were sold on.
+  const checkoutLinkProps = CHECKOUT_IS_LIVE
+    ? { target: "_blank" as const, rel: "noopener noreferrer" }
+    : {};
 
   return (
     <main>
@@ -75,13 +80,13 @@ export default async function Home() {
           className="text-sm font-bold uppercase tracking-[0.2em]"
           style={{ color: "var(--gold)" }}
         >
-          Bret McDermott
+          {SITE.kicker}
         </p>
 
         <h1 className="display mt-5 text-5xl leading-[1.05] sm:text-7xl">
-          I lose most of my bets
+          {SITE.headlineBefore}
           <br />
-          and I&apos;m up{" "}
+          {SITE.headlineAfter}{" "}
           <span style={{ color: "var(--gold)" }} className="tnum">
             {RECORD.units.replace("+", "")} units
           </span>
@@ -89,8 +94,7 @@ export default async function Home() {
         </h1>
 
         <p className="mt-7 max-w-2xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
-          Win rate is the stat everyone advertises and it is the one that tells you the least.
-          I hit {RECORD.winRate} of my plays. I take prices nobody else wants, and over{" "}
+          {SITE.intro}{" "}
           <span className="text-[var(--paper)]">{RECORD.picks} graded bets</span> that has returned{" "}
           <span className="text-[var(--paper)]">{RECORD.roi}</span>.
         </p>
@@ -198,16 +202,16 @@ export default async function Home() {
       <section id="pricing" className="mx-auto max-w-5xl px-6 py-20">
         <h2 className="display text-3xl sm:text-4xl">Join</h2>
         <p className="mt-4 max-w-xl" style={{ color: "var(--muted)" }}>
-          Cancel whenever you want. No contracts, no upsell calls, no lifetime packages.
+          {SITE.pricingNote}
         </p>
 
         <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-16">
           <div>
             <div className="display tnum text-6xl" style={{ color: "var(--gold)" }}>
-              {PRICE}
+              {SITE.price}
             </div>
             <div className="mt-2 text-sm uppercase tracking-widest" style={{ color: "var(--muted)" }}>
-              per month
+              {SITE.priceLabel}
             </div>
           </div>
           <a
@@ -247,6 +251,28 @@ export default async function Home() {
             </span>
             <span>Record verified on Nexfuse, updated live. {RECORD.since} to present.</span>
           </div>
+
+          {POSTS.length > 0 && (
+            <div className="mt-12 border-t pt-8" style={{ borderColor: "rgba(240,240,240,0.09)" }}>
+              <h3 className="display text-2xl">Write-ups</h3>
+              <div className="mt-5 space-y-4">
+                {POSTS.map(p => (
+                  <div key={p.slug}>
+                    <Link href={`/writeups/${p.slug}`} className="text-[var(--paper)]">
+                      {p.title}
+                    </Link>
+                    <span className="ml-3 text-sm" style={{ color: "var(--muted)" }}>
+                      {prettyDate(p.date)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/writeups" className="mt-5 inline-block text-sm font-bold"
+                    style={{ color: "var(--gold)" }}>
+                All write-ups
+              </Link>
+            </div>
+          )}
 
           {/* Linked from the home page on purpose. A payment button with no reachable terms,
               privacy or refund policy is what a browser scores as a throwaway site, and it is

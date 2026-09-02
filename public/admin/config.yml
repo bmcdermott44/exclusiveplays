@@ -1,0 +1,67 @@
+# Bret's editor. Saves are commits to this repo, so every change is versioned and revertible and
+# nothing depends on a service that can be cancelled.
+#
+# His RECORD is deliberately absent. It reads live from Nexfuse in lib/record.ts, and the whole
+# pitch is that those numbers are not hand-entered -- an editable copy would destroy the claim.
+
+backend:
+  name: github
+  repo: bmcdermott44/exclusiveplays
+  branch: main
+  base_url: https://www.exclusiveplays.com
+  auth_endpoint: api/auth
+
+# Saves go straight to main so a post is live in about a minute. Editorial workflow would add a
+# pull request step, which for one person posting daily is friction with no reviewer.
+publish_mode: simple
+media_folder: public/uploads
+public_folder: /uploads
+site_url: https://www.exclusiveplays.com
+locale: en
+
+collections:
+  - name: posts
+    label: Write-ups
+    label_singular: Write-up
+    folder: content/posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{date}} — {{title}}"
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { name: summary, label: "Summary (one or two lines, shows in the list)", widget: text, required: false }
+      - { name: body, label: Write-up, widget: markdown }
+
+  - name: packages
+    label: Packages
+    label_singular: Package
+    folder: content/packages
+    create: true
+    slug: "{{order}}-{{slug}}"
+    summary: "{{name}} — {{price}}"
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: price, label: Price, widget: string, hint: "Type it exactly as it should read, e.g. $49" }
+      - { name: cadence, label: Billing, widget: string, default: per month }
+      - { name: checkout, label: "Checkout link (Whop)", widget: string, required: false }
+      - { name: featured, label: Featured, widget: boolean, default: false }
+      - { name: order, label: "Order (1 shows first)", widget: number, default: 1, value_type: int }
+      - { name: body, label: "What is included", widget: markdown }
+
+  - name: site
+    label: Site copy
+    files:
+      - name: home
+        label: Home page
+        file: content/site.json
+        fields:
+          - { name: kicker, label: "Small line above the headline", widget: string }
+          - { name: headlineBefore, label: "Headline, first line", widget: string }
+          - { name: headlineAfter, label: "Headline, second line (the units figure is added automatically)", widget: string }
+          - { name: intro, label: "Paragraph under the headline", widget: text }
+          - { name: pricingNote, label: "Line under the price", widget: string }
+          - { name: priceLabel, label: "Billing label, e.g. per month", widget: string }
+          - { name: price, label: Price, widget: string }
+          - { name: whopCheckout, label: "Whop checkout link (leave empty until it exists)", widget: string, required: false }
