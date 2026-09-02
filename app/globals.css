@@ -2,13 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Palette sampled from the logo, so the site serves the mark rather than the mark bending to the
+   site. The badge is mint-green over chrome on near-black; these are its own values.
+
+   --gold and --plum keep their names because they are referenced throughout page.tsx; only what
+   they hold has changed. Renaming them would be a large diff for no visual difference. */
 :root {
-  --ink: #10121a;
-  --ink-2: #171a26;
-  --paper: #f4f1ec;
-  --gold: #f0b429;
-  --plum: #6d4aff;
-  --muted: #9aa1b4;
+  --ink: #0a0f0e;       /* the logo's ground, a hair green rather than blue-black */
+  --ink-2: #121a19;
+  --paper: #f0f0f0;     /* the chrome's own white, 21% of the mark's light pixels */
+  --gold: #24f0d8;      /* the bright mint from the E and the ring */
+  --gold-deep: #007860; /* the darker green the bevels fall to */
+  --plum: #cccccc;      /* structure in chrome silver, not violet */
+  --muted: #7d9490;     /* neutral shifted green so it sits in the same family */
 }
 
 html,

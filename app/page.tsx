@@ -60,7 +60,7 @@ export default async function Home() {
         <a
           href={CHECKOUT}
           {...checkoutLinkProps}
-          className="rounded-full px-5 py-2 text-sm font-bold text-[#10121a] transition hover:brightness-110"
+          className="rounded-full px-5 py-2 text-sm font-bold text-[var(--ink)] transition hover:brightness-110"
           style={{ background: "var(--gold)" }}
         >
           Get the plays
@@ -89,15 +89,15 @@ export default async function Home() {
         <p className="mt-7 max-w-2xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
           Win rate is the stat everyone advertises and it is the one that tells you the least.
           I hit 36% of my plays. I take prices nobody else wants, and over{" "}
-          <span className="text-[#f4f1ec]">{RECORD.picks} graded bets</span> that has returned{" "}
-          <span className="text-[#f4f1ec]">{RECORD.roi}</span>.
+          <span className="text-[var(--paper)]">{RECORD.picks} graded bets</span> that has returned{" "}
+          <span className="text-[var(--paper)]">{RECORD.roi}</span>.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <a
             href={CHECKOUT}
           {...checkoutLinkProps}
-            className="rounded-full px-8 py-4 text-base font-bold text-[#10121a] transition hover:brightness-110"
+            className="rounded-full px-8 py-4 text-base font-bold text-[var(--ink)] transition hover:brightness-110"
             style={{ background: "var(--gold)" }}
           >
             Get today&apos;s plays
@@ -116,7 +116,7 @@ export default async function Home() {
       <section
         id="record"
         className="border-y"
-        style={{ borderColor: "rgba(244,241,236,0.08)", background: "var(--ink-2)" }}
+        style={{ borderColor: "rgba(240,240,240,0.09)", background: "var(--ink-2)" }}
       >
         <div className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="display text-3xl sm:text-4xl">The record, in full</h2>
@@ -171,7 +171,7 @@ export default async function Home() {
       {/* ── What you get ────────────────────────────────────────── */}
       <section
         className="border-y"
-        style={{ borderColor: "rgba(244,241,236,0.08)", background: "var(--ink-2)" }}
+        style={{ borderColor: "rgba(240,240,240,0.09)", background: "var(--ink-2)" }}
       >
         <div className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="display text-3xl sm:text-4xl">What you actually get</h2>
@@ -211,7 +211,7 @@ export default async function Home() {
           <a
             href={CHECKOUT}
           {...checkoutLinkProps}
-            className="inline-block rounded-full px-8 py-4 text-center text-base font-bold text-[#10121a] transition hover:brightness-110"
+            className="inline-block rounded-full px-8 py-4 text-center text-base font-bold text-[var(--ink)] transition hover:brightness-110"
             style={{ background: "var(--gold)" }}
           >
             Start now
@@ -222,7 +222,7 @@ export default async function Home() {
       {/* ── Legal ───────────────────────────────────────────────── */}
       <footer
         className="border-t"
-        style={{ borderColor: "rgba(244,241,236,0.08)", background: "var(--ink-2)" }}
+        style={{ borderColor: "rgba(240,240,240,0.09)", background: "var(--ink-2)" }}
       >
         <div className="mx-auto max-w-5xl px-6 py-14">
           <p className="max-w-3xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
@@ -237,11 +237,11 @@ export default async function Home() {
           </p>
           <div
             className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-8 text-sm"
-            style={{ borderColor: "rgba(244,241,236,0.08)", color: "var(--muted)" }}
+            style={{ borderColor: "rgba(240,240,240,0.09)", color: "var(--muted)" }}
           >
             <span className="flex items-center gap-2.5">
               <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7 opacity-90" />
-              <span className="display text-lg text-[#f4f1ec]">Exclusive Plays</span>
+              <span className="display text-lg text-[var(--paper)]">Exclusive Plays</span>
             </span>
             <span>Record verified on Nexfuse, updated live. {RECORD.since} to present.</span>
           </div>
@@ -266,7 +266,7 @@ function Figure({
     <div>
       <div
         className="display tnum text-4xl sm:text-5xl"
-        style={{ color: gold ? "var(--gold)" : muted ? "var(--muted)" : "#f4f1ec" }}
+        style={{ color: gold ? "var(--gold)" : muted ? "var(--muted)" : "var(--paper)" }}
       >
         {value}
       </div>
