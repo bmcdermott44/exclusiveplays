@@ -1,3 +1,4 @@
+import Image from "next/image";
 // Exclusive Plays. One page, one job: make a stranger believe the record, then send them to checkout.
 //
 // Copy rules for this site, set by James 2026-08-25:
@@ -7,60 +8,7 @@
 // The numbers below are Bret's REAL graded record from Nexfuse as of 2026-08-25. They are the
 // entire pitch and they must never be rounded in his favour or quietly left stale.
 
-// Read live from Nexfuse instead of retyping. These numbers ARE the pitch, so a stale figure is
-// not a cosmetic problem: by 2026-09-02 the hardcoded set below was understating him badly --
-// +28.12u at +12.6% when he was actually at +50.01u and +18.0%.
-//
-// get_user_pick_stats is the same function the Nexfuse app reads, callable with the publishable
-// key. It already excludes challenge picks, preseason picks and market parlays, which is why this
-// does not recount picks by hand: a copy of those rules drifts the moment one of them changes.
-const NEXFUSE_URL = "https://iavgrxtcptwyuvbqtalf.supabase.co";
-const NEXFUSE_KEY = "sb_publishable_6GyAJ78iLC3BStZMEylA_g_V_V1fMkp";
-const NEXFUSE_USER = "bretmcdermott";
-
-// Last known good. Shown only if Nexfuse is unreachable at build/render time -- a hiccup there
-// must degrade to slightly-old numbers, never to a blank page or a zero.
-const FALLBACK = {
-  picks: 280, wins: 105, losses: 173, pushes: 2,
-  winRate: "37.8%", units: "+50.01", roi: "+18.0%",
-};
-
-const RECORD_STATIC = {
-  since: "May 2026",
-  profile: `https://getnexfuse.com/u/${NEXFUSE_USER}`,
-};
-
-async function getRecord() {
-  try {
-    const h = { apikey: NEXFUSE_KEY, "Content-Type": "application/json" };
-    const pr = await fetch(
-      `${NEXFUSE_URL}/rest/v1/profiles?username=eq.${NEXFUSE_USER}&select=id`,
-      { headers: h, next: { revalidate: 900 } },
-    );
-    const id = (await pr.json())?.[0]?.id;
-    if (!id) return FALLBACK;
-
-    const sr = await fetch(`${NEXFUSE_URL}/rest/v1/rpc/get_user_pick_stats`, {
-      method: "POST", headers: h, body: JSON.stringify({ p_user_id: id }),
-      next: { revalidate: 900 },
-    });
-    const st = await sr.json();
-    const rec = st?.sports_overall;
-    if (!rec || rec.wins == null) return FALLBACK;
-
-    const wins = Number(rec.wins), losses = Number(rec.losses), pushes = Number(rec.pushes ?? 0);
-    const units = Number(st.units_sports ?? 0);
-    return {
-      picks: wins + losses + pushes,
-      wins, losses, pushes,
-      winRate: rec.win_pct != null ? `${Number(rec.win_pct).toFixed(1)}%` : FALLBACK.winRate,
-      units: `${units >= 0 ? "+" : ""}${units.toFixed(2)}`,
-      roi: rec.roi != null ? `${Number(rec.roi) >= 0 ? "+" : ""}${Number(rec.roi).toFixed(1)}%` : FALLBACK.roi,
-    };
-  } catch {
-    return FALLBACK;
-  }
-}
+import { getRecord, RECORD_STATIC_EXPORT as RECORD_STATIC } from "../lib/record";
 
 /**
  * WIRING THE CHECKOUT — two lines, both here.
@@ -96,7 +44,19 @@ export default async function Home() {
     <main>
       {/* ── Top bar ─────────────────────────────────────────────── */}
       <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-7">
-        <span className="display text-2xl tracking-tight">Exclusive Plays</span>
+        {/* Badge beside the wordmark rather than replacing it: the mark carries recognition,
+            the words carry the name to anyone seeing it for the first time. */}
+        <span className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt=""
+            width={44}
+            height={44}
+            priority
+            className="h-11 w-11"
+          />
+          <span className="display text-2xl tracking-tight">Exclusive Plays</span>
+        </span>
         <a
           href={CHECKOUT}
           {...checkoutLinkProps}
@@ -279,7 +239,10 @@ export default async function Home() {
             className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-8 text-sm"
             style={{ borderColor: "rgba(244,241,236,0.08)", color: "var(--muted)" }}
           >
-            <span className="display text-lg text-[#f4f1ec]">Exclusive Plays</span>
+            <span className="flex items-center gap-2.5">
+              <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7 opacity-90" />
+              <span className="display text-lg text-[#f4f1ec]">Exclusive Plays</span>
+            </span>
             <span>Record verified on Nexfuse, updated live. {RECORD.since} to present.</span>
           </div>
         </div>
