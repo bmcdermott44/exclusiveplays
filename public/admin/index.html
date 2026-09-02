@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex" />
   <title>Exclusive Plays admin</title>
+  <!-- Absolute, because Decap resolves config.yml RELATIVE to the current URL. Landing on
+       /admin rather than /admin/ made it look for /config.yml at the site root and 404. -->
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.1.10/dist/decap-cms.js"></script>
